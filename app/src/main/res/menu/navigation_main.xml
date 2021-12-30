@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <item
+            android:id="@+id/map"
+            android:icon="@drawable/map"
+            android:iconTint="@null"
+            android:title="Map" />
+        <item
+            android:id="@+id/search"
+            android:icon="@drawable/search"
+            android:iconTint="@null"
+            android:title="Search" />
+        <item
+            android:id="@+id/appointment"
+            android:icon="@drawable/appointment"
+            android:iconTint="@null"
+            android:title="Appointment" />
+        <item
+            android:id="@+id/users"
+            android:icon="@drawable/id"
+            android:iconTint="@null"
+            android:title="Users" />
+        <item
+            android:id="@+id/profile"
+            android:icon="@drawable/profile"
+            android:iconTint="@null"
+            android:title="Profile" />
+
+
+</menu>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DocFinder</string>
+    <string name="mapbox_access_token">sk.eyJ1IjoiY2hyaXp0aWFubiIsImEiOiJja3M4bGh1bWczczU4MndzNzlzOGwyMXF1In0.CzNqod0QLnV_Dyy_GegvgQ</string>
+    <string-array name="my_header_title">
+        <item></item>
+        <item></item>
+
+    </string-array>
+</resources>

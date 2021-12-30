@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "34907307198",
+    "project_id": "docfinder-application",
+    "storage_bucket": "docfinder-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34907307198:android:7b383840f4d3235a42b2ef",
+        "android_client_info": {
+          "package_name": "docfinder.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34907307198-j82gb7jaqfbfa4j0evam5i8mhkp9qms5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "docfinder.app",
+            "certificate_hash": "0ef26bfda2484f716407a728a84c4b3eb7bad503"
+          }
+        },
+        {
+          "client_id": "34907307198-jgd4pk3j5rfcrup7hjo3n52rjt4hta60.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8cS6_ojBXDC6ad2MbE02pAvF5StQ9cak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34907307198-jgd4pk3j5rfcrup7hjo3n52rjt4hta60.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
