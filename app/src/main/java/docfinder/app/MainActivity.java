@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
     List<String> doctorType = new ArrayList<>();
     static TextView doctorName;
 
-    static androidx.appcompat.app.AlertDialog editServicesDialog,addAffiliates;
+    static androidx.appcompat.app.AlertDialog editServicesDialog,addAffiliates,editWork;
     static View myLayout;
 
     //APPOINTMENT
@@ -331,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
 
     //Calendar
     CardView viewAppointment;
-    static CardView calendarTable;
+    static CardView calendarTable,workButton;
     String timeStart = "09:00";
     String timeEnd = "19:00";
 
@@ -1593,10 +1593,21 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
         viewAppointment = findViewById(R.id.viewAppointment);
         calendarTable = findViewById(R.id.calendarTable);
 
+
         calendarTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewAppointment.setVisibility(VISIBLE);
+            }
+        });
+
+        workButton = findViewById(R.id.workButton);
+        workButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                setWorkDays();
+
             }
         });
 
@@ -3542,6 +3553,36 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
         addAffiliates.setCancelable(true);
         addAffiliates.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         addAffiliates.show();
+
+    }
+
+    public void setWorkDays(){
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(MainActivity.this);
+        myLayout = inflater.inflate(R.layout.edit_work, null);
+
+
+
+
+        Button closeWork = (Button) myLayout.findViewById(R.id.closeWork);
+        closeWork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                editWork.dismiss();
+
+            }
+        });
+
+
+
+
+
+        builder.setView(myLayout);
+        editWork = builder.create();
+
+        editWork.setCancelable(true);
+        editWork.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        editWork.show();
 
     }
 
