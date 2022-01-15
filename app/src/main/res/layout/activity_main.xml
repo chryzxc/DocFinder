@@ -1137,7 +1137,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    app:srcCompat="@drawable/verified" />
+                                    android:background="@drawable/verified" />
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
