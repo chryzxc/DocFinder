@@ -77,6 +77,7 @@ dependencies {
     compile 'com.github.sundeepk:compact-calendar-view:3.0.0'
 
     compile 'com.github.Plumillon:ChipView:1.2.0'
+    implementation 'io.grpc:grpc-okhttp:1.32.2'
 
 
 

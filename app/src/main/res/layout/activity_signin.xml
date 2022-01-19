@@ -168,7 +168,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/adminLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="65dp"
                     android:layout_gravity="center"
@@ -178,6 +178,13 @@
                     android:backgroundTint="@color/lightbrown"
                     android:text="Login"
                     app:cornerRadius="20dp" />
+
+                <TextView
+                    android:id="@+id/adminBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Back" />
 
             </LinearLayout>
 

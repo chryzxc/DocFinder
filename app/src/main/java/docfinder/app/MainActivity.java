@@ -1968,7 +1968,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
             });
 
         }else{
-            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
         }
 
     }

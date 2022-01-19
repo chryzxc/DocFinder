@@ -98,6 +98,20 @@ public class Signin extends AppCompatActivity {
         verificationLayout = findViewById(R.id.verificationLayout);
         registerLayout = findViewById(R.id.registerLayout);
 
+        Button adminLogin = findViewById(R.id.adminLogin);
+        TextView adminBack = findViewById(R.id.adminBack);
+
+
+        adminLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), VerifyAccount.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+            }
+        });
+
         verifyBack = findViewById(R.id.verifyBack);
         verifyBack.setPaintFlags(verifyBack.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
