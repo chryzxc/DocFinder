@@ -60,6 +60,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -123,6 +124,8 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
+import com.plumillonforge.android.chipview.Chip;
+import com.plumillonforge.android.chipview.ChipView;
 import com.willy.ratingbar.BaseRatingBar;
 import com.willy.ratingbar.ScaleRatingBar;
 
@@ -269,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
     TextView appointmentTime,appointmentDate,appointmentPerson,appoinmentDetails;
 
     //PROFILE
-    Button signoutButton;
+    Button signoutButton,verifyButton;
     static ConstraintLayout profilePatient,profileMedical;
     TextView userName,userNumber,userAddress;
     MaterialCardView setupFacilityProfile;
@@ -303,6 +306,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
     String startTime,endTime;
 
     Date requesteddate,startdate,startdate2,enddate,enddate2;
+    ImageView verifiedBadge;
 
     //GALLERY
     static TextView noGalleryText;
@@ -458,6 +462,18 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
             }
         });
 
+        List<Chip> chipList = new ArrayList<>();
+        chipList.add(new Tag("Monday"));
+        chipList.add(new Tag("Tuesday"));
+        chipList.add(new Tag("Wednesday"));
+        chipList.add(new Tag("Thursday"));
+        chipList.add(new Tag("Friday"));
+        chipList.add(new Tag("Saturday"));
+        ChipView chipDefault = (ChipView) findViewById(R.id.chipview);
+        chipDefault.setChipList(chipList);
+
+
+
         appointmentExpand = (ConstraintLayout) findViewById(R.id.appointmentExpand);
         hideAppointmentExpand = (CardView) findViewById(R.id.hideAppointmentExpand);
 
@@ -485,6 +501,15 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                 Intent gallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 gallery.setType("image/*");
                 startActivityForResult(gallery, 200);
+            }
+        });
+
+        verifiedBadge = (ImageView) findViewById(R.id.verifiedBadge);
+        verifiedBadge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Verified user", Snackbar.LENGTH_LONG)
+                        .setAction("Ok", null).show();
             }
         });
 
@@ -955,6 +980,16 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
+
+            }
+        });
+
+        verifyButton = findViewById(R.id.verifyButton);
+        verifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), VerifyAccount.class);
+                startActivity(intent);
 
             }
         });
@@ -3711,5 +3746,29 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
         }
 
         super.onBackPressed();
+    }
+
+    public class Tag implements Chip {
+        private String mName;
+        private int mType = 0;
+
+        public Tag(String name, int type) {
+            this(name);
+            mType = type;
+        }
+
+        public Tag(String name) {
+            mName = name;
+        }
+
+        @Override
+        public String getText() {
+            return mName;
+        }
+
+        public int getType() {
+            return mType;
+        }
+
     }
 }
