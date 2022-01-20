@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:clickable="true"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -616,7 +616,7 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:clickable="true"
-        android:visibility="gone"
+        android:visibility="visible"
         app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -932,6 +932,7 @@
                                                 android:layout_marginRight="10dp"
                                                 android:layout_weight="1"
                                                 android:background="@drawable/verified"
+                                                android:visibility="gone"
                                                 app:layout_constraintBottom_toBottomOf="@+id/searchFacilityName"
                                                 app:layout_constraintEnd_toEndOf="parent"
                                                 app:layout_constraintHorizontal_bias="0.0"
@@ -1412,7 +1413,7 @@
         android:animateLayoutChanges="true"
         android:background="@color/cardview_light_background"
         android:clickable="true"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -1493,7 +1494,7 @@
         android:animateLayoutChanges="true"
         android:background="@color/white"
         android:clickable="true"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -1642,7 +1643,7 @@
         android:animateLayoutChanges="true"
         android:background="@color/white"
         android:clickable="true"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -1692,6 +1693,7 @@
                             android:backgroundTint="#67595E"
                             android:text="Verify now"
                             android:textColor="@color/white"
+                            android:visibility="gone"
                             app:cornerRadius="20dp"
                             app:layout_constraintEnd_toStartOf="@+id/signoutButton"
                             app:layout_constraintHorizontal_bias="1.0"
@@ -1762,13 +1764,13 @@
                                 app:srcCompat="@drawable/verified" />
 
                             <TextView
-                                android:id="@+id/textView14"
+                                android:id="@+id/dateVerified"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
+                                android:layout_marginLeft="3dp"
                                 android:layout_weight="1"
-                                android:text="Verified since " />
+                                android:text="Verified" />
                         </LinearLayout>
 
                         <TextView

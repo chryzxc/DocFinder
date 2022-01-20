@@ -78,7 +78,8 @@ dependencies {
 
     compile 'com.github.Plumillon:ChipView:1.2.0'
     implementation 'io.grpc:grpc-okhttp:1.32.2'
-
+    implementation 'com.ccy:FocusLayoutManager:1.0.2'
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
 
 }

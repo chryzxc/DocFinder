@@ -191,7 +191,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 MainActivity.doctorName.setText(document.getString("name"));
-
+                                if (document.getBoolean("verified") != null && document.getBoolean("verified") == true){
+                                    MainActivity.verifiedBadge.setVisibility(VISIBLE);
+                                }else{
+                                    MainActivity.verifiedBadge.setVisibility(GONE);
+                                }
                                 //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             } else {
                                 //  Log.d(TAG, "No such document");

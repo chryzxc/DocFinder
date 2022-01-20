@@ -99,7 +99,9 @@ public class Signin extends AppCompatActivity {
         registerLayout = findViewById(R.id.registerLayout);
 
         Button adminLogin = findViewById(R.id.adminLogin);
-        TextView adminBack = findViewById(R.id.adminBack);
+
+        ConstraintLayout loginPanel = findViewById(R.id.loginPanel);
+        LinearLayout adminPanel = findViewById(R.id.adminPanel);
 
 
         adminLogin.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +110,26 @@ public class Signin extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), VerifyAccount.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
+            }
+        });
+
+        TextView adminText = findViewById(R.id.adminText);
+        adminText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                loginPanel.setVisibility(GONE);
+                adminPanel.setVisibility(VISIBLE);
+            }
+        });
+
+        TextView adminBack = findViewById(R.id.adminBack);
+        adminBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adminPanel.setVisibility(GONE);
+                loginPanel.setVisibility(VISIBLE);
 
             }
         });

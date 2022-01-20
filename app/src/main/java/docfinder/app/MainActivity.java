@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
     androidx.appcompat.app.AlertDialog profileDialog;
     CardView profileImageCard;
     ImageView profileImage;
+    LinearLayout verifiedLayout;
 
     //VIEW SEARCH
     static TextView searchFacilityName,searchRatings,searchCounts,searchFacilityDetails,searchFacilityLocation;
@@ -300,13 +301,14 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
     static ImageView facilityCover,doctorImage;
     ConstraintLayout viewSelected;
 
+
     static ListenerRegistration gallery;
 
     String selectedDate;
     String startTime,endTime;
 
     Date requesteddate,startdate,startdate2,enddate,enddate2;
-    ImageView verifiedBadge;
+    static ImageView verifiedBadge;
 
     //GALLERY
     static TextView noGalleryText;
@@ -1792,6 +1794,11 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                                                                DocumentSnapshot document = task.getResult();
                                                                if (document.exists()) {
                                                                    MainActivity.doctorName.setText(document.getString("name"));
+                                                                   if (document.getBoolean("verified") != null && document.getBoolean("verified") == true){
+                                                                       verifiedBadge.setVisibility(VISIBLE);
+                                                                   }else{
+                                                                       verifiedBadge.setVisibility(GONE);
+                                                                   }
 
                                                                    //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                                                } else {
@@ -1914,6 +1921,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
 
 
     public void loadUser(){
+        verifiedLayout = findViewById(R.id.verifiedLayout);
         if (firebaseAuth.getCurrentUser() != null){
 
             db.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -1927,6 +1935,13 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                         loadName = value.getString("name");
                         loadAddress = value.getString("address");
                         loadNumber = value.getString("phone");
+
+                        if (value.getBoolean("verified") != null && value.getBoolean("verified") == true ){
+                            verifiedLayout.setVisibility(VISIBLE);
+
+                        }else{
+                            verifiedLayout.setVisibility(GONE);
+                        }
 
                         userName = findViewById(R.id.userName);
                         userNumber = findViewById(R.id.userNumber);

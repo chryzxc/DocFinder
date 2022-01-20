@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +23,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -30,9 +37,16 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.willy.ratingbar.BaseRatingBar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import ccy.focuslayoutmanager.FocusLayoutManager;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static ccy.focuslayoutmanager.FocusLayoutManager.dp2px;
 
 public class VerifyAdapter extends RecyclerView.Adapter<VerifyAdapter.ViewHolder> {
     private List<VerifyList> myListList;
@@ -60,23 +74,73 @@ public class VerifyAdapter extends RecyclerView.Adapter<VerifyAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         VerifyList myList=myListList.get(position);
         holder.expandVerify.setBackgroundResource(R.drawable.arrow_collapse);
         holder.expandText.setText("More details");
+        holder.documentsText.setText("Documents");
+
+        holder.approveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.collection("Users").document(myList.getDoctorID())
+                        .update("verified", true)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(ct, "Success", Toast.LENGTH_SHORT).show();
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(ct, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+            }
+        });
 
         holder.expandVerify.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if (holder.expandFacility.getVisibility() == View.VISIBLE) {
-                    holder.expandFacility.setVisibility(View.GONE);
-                    holder.expandVerify.setBackgroundResource(R.drawable.arrow_collapse);
-                    holder.expandText.setText("More details");
+
+
+                if (holder.hasFacility == true){
+                    holder.noFacilityText.setVisibility(GONE);
+
+                    if (holder.expandFacility.getVisibility() == View.VISIBLE) {
+                        holder.expandFacility.setVisibility(View.GONE);
+                        holder.expandVerify.setBackgroundResource(R.drawable.arrow_collapse);
+                        holder.expandText.setText("More details");
+                    }else{
+                        holder.expandFacility.setVisibility(View.VISIBLE);
+                        holder.expandVerify.setBackgroundResource(R.drawable.arrow_expand);
+                        holder.expandText.setText("Hide details");
+                    }
+
                 }else{
-                    holder.expandFacility.setVisibility(View.VISIBLE);
-                    holder.expandVerify.setBackgroundResource(R.drawable.arrow_expand);
-                    holder.expandText.setText("Hide details");
+                    if (holder.noFacilityText.getVisibility() == VISIBLE){
+                        holder.noFacilityText.setVisibility(GONE);
+                        holder.expandVerify.setBackgroundResource(R.drawable.arrow_collapse);
+                        holder.expandText.setText("More details");
+
+                    }else{
+                        holder.noFacilityText.setVisibility(VISIBLE);
+                        holder.expandVerify.setBackgroundResource(R.drawable.arrow_expand);
+                        holder.expandText.setText("Hide details");
+
+                    }
+
+
                 }
+
+
+
 
             }
         });
@@ -100,7 +164,54 @@ public class VerifyAdapter extends RecyclerView.Adapter<VerifyAdapter.ViewHolder
 
 
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        holder.document_myLists = new ArrayList<>();
+        FocusLayoutManager focusLayoutManager =
+                new FocusLayoutManager.Builder()
+                        .layerPadding(dp2px(ct, 100))
+                        .normalViewGap(dp2px(ct, 5))
+                        .focusOrientation(FocusLayoutManager.FOCUS_LEFT)
+                        .isAutoSelect(true)
+                        .maxLayerCount(1)
+                        .setOnFocusChangeListener(new FocusLayoutManager.OnFocusChangeListener() {
+                            @Override
+                            public void onFocusChanged(int focusdPosition, int lastFocusdPosition) {
+
+                            }
+                        })
+                        .build();
+        holder.document_rv.setLayoutManager(focusLayoutManager);
+
+
+        holder.documents =  db.collection("Facility").document(myList.getDoctorID()).collection("gallery")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        holder.document_myLists.clear();
+                        if (e != null) {
+
+                            return;
+                        }
+
+
+                        for (QueryDocumentSnapshot doc : value) {
+                            holder.document_myLists.add(new VerifyDocumentList(doc.getId(),myList.getDoctorID()));
+
+                        }
+
+                        if (holder.document_myLists.size() == 0){
+                            holder.documentsText.setText("No documents attached");
+                        }
+
+                        holder.document_adapter = new VerifyDocumentAdapter(holder.document_myLists, ct);
+                        holder.document_rv.setAdapter(holder.document_adapter);
+                        holder.document_adapter.notifyDataSetChanged();
+                    }
+                });
+
+
 
 
 /*
@@ -136,6 +247,29 @@ public class VerifyAdapter extends RecyclerView.Adapter<VerifyAdapter.ViewHolder
                     } else {
 
                     }
+                }
+            }
+        });
+
+        db.collection("Facility").document(myList.getDoctorID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        holder.userVerifyType.setText(document.getString("facility_details"));
+                        holder.userVerifyFacility.setText(document.getString("facility_name"));
+                        holder.userVerifyFacilityAddress.setText(document.getString("facility_address"));
+                        holder.hasFacility = true;
+
+                    } else {
+
+                        holder.hasFacility = false;
+
+                    }
+                }else{
+                    holder.hasFacility = null;
                 }
             }
         });
@@ -314,22 +448,39 @@ public class VerifyAdapter extends RecyclerView.Adapter<VerifyAdapter.ViewHolder
         private Button viewButton,locationButton;
         Boolean sendRatings = false;
 */
+        List<VerifyDocumentList> document_myLists;
+        RecyclerView document_rv;
+        VerifyDocumentAdapter document_adapter;
+        ListenerRegistration documents;
+
         ImageView userVerifyProfile,verifiyImageLocation;
-        TextView userVerifyName,userVerifyAddress,userVerifyNumber,expandText;
+        TextView userVerifyName,userVerifyAddress,userVerifyNumber,userVerifyType,userVerifyFacility,userVerifyFacilityAddress,expandText,documentsText,noFacilityText;
         ImageView expandVerify;
         ConstraintLayout expandFacility;
+        Boolean hasFacility;
+        Button approveButton;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            approveButton = (Button) itemView.findViewById(R.id.approveButton);
+
+            document_rv = (RecyclerView) itemView.findViewById(R.id.document_rec);
+            documentsText=(TextView)itemView.findViewById(R.id.documentsText);
             expandText=(TextView)itemView.findViewById(R.id.expandText);
             expandVerify = (ImageView) itemView.findViewById(R.id.expandVerify);
             verifiyImageLocation = (ImageView) itemView.findViewById(R.id.verifiyImageLocation);
+
             expandFacility = (ConstraintLayout) itemView.findViewById(R.id.expandFacility);
             userVerifyName=(TextView)itemView.findViewById(R.id.userVerifyName);
             userVerifyAddress=(TextView)itemView.findViewById(R.id.userVerifyAddress);
             userVerifyNumber=(TextView)itemView.findViewById(R.id.userVerifyNumber);
             userVerifyProfile=(ImageView)itemView.findViewById(R.id.userVerifyProfile);
+
+            userVerifyType=(TextView)itemView.findViewById(R.id.userVerifyType);
+            userVerifyFacility=(TextView)itemView.findViewById(R.id.userVerifyFacility);
+            userVerifyFacilityAddress=(TextView)itemView.findViewById(R.id.userVerifyFacilityAddress);
+            noFacilityText=(TextView)itemView.findViewById(R.id.noFacilityText);
 
           /*
             searchName=(TextView)itemView.findViewById(R.id.searchName);

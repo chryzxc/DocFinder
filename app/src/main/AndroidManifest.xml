@@ -14,6 +14,7 @@
         android:theme="@style/Theme.DocFinder">
         <activity android:name=".VerifyAccount"></activity>
         <activity android:name=".Signin"></activity>
+        <activity android:name=".ImageViewer"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
