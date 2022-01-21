@@ -5,6 +5,7 @@ import android.media.Image;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SearchList {
 
@@ -12,9 +13,10 @@ public class SearchList {
     private Double mapLat,mapLong,ratings,my_rating;
     private int count;
     private Bitmap image;
+    private String work_days;
 
 
-    public SearchList(String id, String name, String details,String address,Double ratings,Double my_rating,int count,Double mapLat, Double mapLong, Bitmap image) {
+    public SearchList(String id, String name, String details, String address, Double ratings, Double my_rating, int count, Double mapLat, Double mapLong, Bitmap image, String work_days) {
         this.id = id;
         this.name = name;
         this.details = details;
@@ -25,6 +27,7 @@ public class SearchList {
         this.my_rating = my_rating;
         this.image = image;
         this.count = count;
+        this.work_days = work_days;
 
     }
 
@@ -32,6 +35,7 @@ public class SearchList {
 
         return id;
     }
+
 
 
     public String getName() {
@@ -82,4 +86,7 @@ public class SearchList {
 
     }
 
+    public String getWork_days() {
+        return work_days;
+    }
 }

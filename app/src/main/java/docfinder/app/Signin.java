@@ -107,9 +107,18 @@ public class Signin extends AppCompatActivity {
         adminLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), VerifyAccount.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                EditText adminUsername = (EditText) findViewById(R.id.adminUsername);
+                EditText adminPassword = (EditText) findViewById(R.id.adminPassword);
+
+                if (!adminUsername.getText().toString().matches("admin") && !adminPassword.getText().toString().matches("password")){
+                    Toast.makeText(Signin.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(getApplicationContext(), VerifyAccount.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+
+
 
             }
         });

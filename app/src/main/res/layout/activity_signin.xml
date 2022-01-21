@@ -99,14 +99,14 @@
                             app:srcCompat="@drawable/user" />
 
                         <EditText
-                            android:id="@+id/editText"
+                            android:id="@+id/adminUsername"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:ems="8"
                             android:gravity="center"
                             android:hint="Username"
-                            android:inputType="number|phone"
+                            android:inputType="text"
                             android:maxLength="13"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -155,14 +155,14 @@
                             app:srcCompat="@drawable/lock" />
 
                         <EditText
-                            android:id="@+id/editText2"
+                            android:id="@+id/adminPassword"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:ems="8"
                             android:gravity="center"
                             android:hint="Password"
-                            android:inputType="phone"
+                            android:inputType="textPassword"
                             android:maxLength="13"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

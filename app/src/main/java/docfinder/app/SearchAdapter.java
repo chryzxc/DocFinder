@@ -41,6 +41,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.willy.ratingbar.BaseRatingBar;
 import com.willy.ratingbar.ScaleRatingBar;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +81,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
        // MainActivity.searchRatingBar.
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+      //  Toast.makeText(ct, myList.getWork_days(), Toast.LENGTH_SHORT).show();
 
         holder.searchName.setText(myList.getName());
         holder.searchType.setText(myList.getDetails());
@@ -124,12 +127,27 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @Override
             public void onClick(View v) {
 
-
-
                 MainActivity.currentViewId = myList.getId();
                 MainActivity.viewSearch.setVisibility(View.VISIBLE);
 
+                MainActivity.chipList.clear();
+                MainActivity.workDays.clear();
 
+
+                if (myList.getWork_days() != null){
+                    List<String> slicedList = Arrays.asList(myList.getWork_days().split(","));
+                    for (String string : slicedList){
+                        String finalString = string.replace("[","").replace("]","");
+                        MainActivity.chipList.add(new MainActivity.Tag(finalString.trim()));
+                        MainActivity.workDays.add(finalString.trim());
+
+                    }
+
+
+
+                }
+
+                MainActivity.chipDefault.setChipList(MainActivity.chipList);
 
 
                 if (myList.getId().matches(firebaseAuth.getCurrentUser().getUid())){
@@ -139,6 +157,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     MainActivity.uploadGallery.setVisibility(View.VISIBLE);
                     MainActivity.uploadCover.setVisibility(View.VISIBLE);
                     MainActivity.calendarTable.setVisibility(View.VISIBLE);
+                    MainActivity.workButton.setVisibility(VISIBLE);
 
                 }else{
 
@@ -148,6 +167,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         MainActivity.uploadGallery.setVisibility(View.GONE);
                         MainActivity.uploadCover.setVisibility(View.GONE);
                         MainActivity.calendarTable.setVisibility(View.GONE);
+                        MainActivity.workButton.setVisibility(GONE);
 
                     }else{
 
@@ -155,6 +175,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         MainActivity.uploadGallery.setVisibility(View.GONE);
                         MainActivity.uploadCover.setVisibility(View.GONE);
                         MainActivity.calendarTable.setVisibility(View.GONE);
+                        MainActivity.workButton.setVisibility(GONE);
 
                     }
 

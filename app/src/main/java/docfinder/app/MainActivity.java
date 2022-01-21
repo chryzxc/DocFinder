@@ -137,6 +137,7 @@ import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -345,6 +346,9 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
     static ListenerRegistration currentServices,currentAffiliations;
     static Services services;
     static Affiliates affiliates;
+    static List<Chip> chipList = new ArrayList<>();
+    static ChipView chipDefault;
+    static List workDays = new ArrayList();
 
 
 
@@ -465,15 +469,10 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
             }
         });
 
-        List<Chip> chipList = new ArrayList<>();
-        chipList.add(new Tag("Monday"));
-        chipList.add(new Tag("Tuesday"));
-        chipList.add(new Tag("Wednesday"));
-        chipList.add(new Tag("Thursday"));
-        chipList.add(new Tag("Friday"));
-        chipList.add(new Tag("Saturday"));
-        ChipView chipDefault = (ChipView) findViewById(R.id.chipview);
-        chipDefault.setChipList(chipList);
+
+
+        chipDefault = (ChipView) findViewById(R.id.chipview);
+
 
 
 
@@ -536,6 +535,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                         uploadCover.setVisibility(VISIBLE);
                         uploadGallery.setVisibility(VISIBLE);
                         MainActivity.calendarTable.setVisibility(View.VISIBLE);
+                        MainActivity.workButton.setVisibility(VISIBLE);
 
                         MainActivity.searchFacilityName.setText(search_myLists.get(finalX).getName());
                         MainActivity.searchFacilityLocation.setText(search_myLists.get(finalX).getAddress());
@@ -543,6 +543,25 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                         MainActivity.searchCounts.setText((String.valueOf("("+search_myLists.get(finalX).getCount()+" reviews)")));
                         MainActivity.searchFacilityDetails.setText(search_myLists.get(finalX).getDetails());
                         MainActivity.searchRatingBar.setRating(search_myLists.get(finalX).getMy_rating().floatValue());
+
+                        MainActivity.chipList.clear();
+                        MainActivity.workDays.clear();
+
+
+                        if (search_myLists.get(finalX).getWork_days() != null){
+                            List<String> slicedList = Arrays.asList(search_myLists.get(finalX).getWork_days().split(","));
+                            for (String string : slicedList){
+                                String finalString = string.replace("[","").replace("]","");
+                                MainActivity.chipList.add(new MainActivity.Tag(finalString.trim()));
+                                MainActivity.workDays.add(finalString.trim());
+
+                            }
+
+
+
+                        }
+
+                        MainActivity.chipDefault.setChipList(MainActivity.chipList);
 
                         displayGallery(v.getContext(),search_myLists.get(finalX).getId());
 
@@ -1787,6 +1806,26 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                                                    MainActivity.searchFacilityDetails.setText(search_myLists.get(finalX).getDetails());
                                                    MainActivity.searchRatingBar.setRating(search_myLists.get(finalX).getMy_rating().floatValue());
 
+                                                   MainActivity.chipList.clear();
+                                                   MainActivity.workDays.clear();
+
+
+                                                   if (search_myLists.get(finalX).getWork_days() != null){
+                                                       List<String> slicedList = Arrays.asList(search_myLists.get(finalX).getWork_days().split(","));
+                                                       for (String string : slicedList){
+                                                           String finalString = string.replace("[","").replace("]","");
+                                                           MainActivity.chipList.add(new MainActivity.Tag(finalString.trim()));
+                                                           MainActivity.workDays.add(finalString.trim());
+
+                                                       }
+
+
+
+                                                   }
+
+                                                   MainActivity.chipDefault.setChipList(MainActivity.chipList);
+
+
                                                    db.collection("Users").document(currentViewId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                        @Override
                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -2164,8 +2203,18 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                     }
 
                     featurelist.add(Feature.fromGeometry(Point.fromLngLat(document.getDouble("facility_longitude"),document.getDouble("facility_latitude")),properties,document.getId()));
-                    search_myLists.add(new SearchList(document.getId(),document.getString("facility_name"),document.getString("facility_details"),document.getString("facility_address"),(double)finalRating,(double)my_rating,count,document.getDouble("facility_latitude"),document.getDouble("facility_longitude"),null));
-                 /*
+                    if (document.get("work_days") != null){
+                        search_myLists.add(new SearchList(document.getId(),document.getString("facility_name"),document.getString("facility_details"),document.getString("facility_address"),(double)finalRating,(double)my_rating,count,document.getDouble("facility_latitude"),document.getDouble("facility_longitude"),null,document.get("work_days").toString()));
+                  //      Toast.makeText(context, "dre null", Toast.LENGTH_SHORT).show();
+                    }else{
+                        search_myLists.add(new SearchList(document.getId(),document.getString("facility_name"),document.getString("facility_details"),document.getString("facility_address"),(double)finalRating,(double)my_rating,count,document.getDouble("facility_latitude"),document.getDouble("facility_longitude"),null,null));
+                     //   Toast.makeText(context, "null", Toast.LENGTH_SHORT).show();
+                    }
+
+                 //   search_myLists.add(new SearchList(document.getId(),document.getString("facility_name"),document.getString("facility_details"),document.getString("facility_address"),(double)finalRating,(double)my_rating,count,document.getDouble("facility_latitude"),document.getDouble("facility_longitude"),null,null));
+
+
+                    /*
                     facilityMarker = mapboxMap.addMarker(new MarkerOptions()
                             .position(new LatLng(document.getDouble("facility_latitude"), document.getDouble("facility_longitude")))
                             .title(document.getString("facility_name"))
@@ -3620,6 +3669,30 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
         CheckBox sundayBox = myLayout.findViewById(R.id.sundayBox);
 
 
+        if (workDays.contains("Monday")){
+            mondayBox.setChecked(true);
+
+        }
+        if (workDays.contains("Tuesday")){
+            tuesdayBox.setChecked(true);
+        }
+        if (workDays.contains("Wednesday")){
+            wednesdayBox.setChecked(true);
+        }
+        if (workDays.contains("Thursday")){
+            thursdayBox.setChecked(true);
+        }
+        if (workDays.contains("Friday")){
+            fridayBox.setChecked(true);
+        }
+        if (workDays.contains("Saturday")){
+            saturdayBox.setChecked(true);
+        }
+        if (workDays.contains("Sunday")){
+            sundayBox.setChecked(true);
+        }
+
+
 
 
 
@@ -3822,7 +3895,7 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
         super.onBackPressed();
     }
 
-    public class Tag implements Chip {
+    static public class Tag implements Chip {
         private String mName;
         private int mType = 0;
 
