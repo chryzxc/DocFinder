@@ -274,6 +274,29 @@ public class VerifyAdapter extends RecyclerView.Adapter<VerifyAdapter.ViewHolder
             }
         });
 
+        db.collection("Facility").document(myList.getDoctorID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        holder.userVerifyType.setText(document.getString("facility_details"));
+                        holder.userVerifyFacility.setText(document.getString("facility_name"));
+                        holder.userVerifyFacilityAddress.setText(document.getString("facility_address"));
+                        holder.hasFacility = true;
+
+                    } else {
+
+                        holder.hasFacility = false;
+
+                    }
+                }else{
+                    holder.hasFacility = null;
+                }
+            }
+        });
+
         StorageReference storageReference1 = FirebaseStorage.getInstance().getReference();
         storageReference1.child(myList.getDoctorID()+"/userImage.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

@@ -57,8 +57,8 @@
 
             <ImageView
                 android:id="@+id/expandVerify"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:visibility="visible"
@@ -296,6 +296,10 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>
+
+
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

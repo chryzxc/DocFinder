@@ -3647,8 +3647,8 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
 
                 addAffiliates.dismiss();
 
-            }
-        });
+                    }
+                });
 
 
 
@@ -3752,8 +3752,56 @@ public class MainActivity extends AppCompatActivity implements PermissionsListen
                         Toast.makeText(context, "Work days successfully set", Toast.LENGTH_SHORT).show();
                         editWork.dismiss();
 
+            }
+        });
+
+        Button saveWork = (Button) myLayout.findViewById(R.id.saveWork);
+        saveWork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List daysHash = new ArrayList();
+
+                if (mondayBox.isChecked()){
+                    daysHash.add("Monday");
+
+                }
+                if (tuesdayBox.isChecked()){
+                    daysHash.add("Tuesday");
+
+                }
+                if (wednesdayBox.isChecked()){
+                    daysHash.add("Wednesday");
+
+                }
+                if (thursdayBox.isChecked()){
+                    daysHash.add("Thursday");
+
+                }
+                if (fridayBox.isChecked()){
+                    daysHash.add("Friday");
+                }
+                if (saturdayBox.isChecked()){
+                    daysHash.add("Saturday");
+                }
+                if (sundayBox.isChecked()){
+                    daysHash.add("Sunday");
+                }
+
+
+                DocumentReference documentReference1 = db.collection("Facility").document(firebaseAuth.getCurrentUser().getUid());
+                documentReference1.update("work_days",daysHash).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(context, "Work days successfully set", Toast.LENGTH_SHORT).show();
+                        editWork.dismiss();
+
                     }
                 });
+
+
+
+            }
+        });
 
 
 
